@@ -2,9 +2,16 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.openqa.selenium.By.cssSelector;
+
+
 
 public class CardOrderTest {
     private WebDriver driver;
@@ -32,8 +39,49 @@ public class CardOrderTest {
         driver = null;
     }
 
+    //  заявка отправляется успешно
+    @Test
+    void shouldTestSuccess() {
+        driver.get("http://localhost:7777");
+        // указываем элемент, который будет основой для теста (форму заявки всю)
+        WebElement form = driver.findElement(cssSelector("form[class='form form_size_m form_theme_alfa-on-white']"));
+        // даём значения `data-test-id` и внутри него ищите нужный  `input` - используем вложенность для селекторов. В данном случаем строка имя и фамилия имеет идентификатор NAME
+        driver.findElement(cssSelector("[data-test-id=name] input")).sendKeys("Иван Андреевич");
+        // тут используем индификатор phone
+        driver.findElement(cssSelector("[data-test-id=phone] input")).sendKeys("+79325450351");
+        // добавляем элемент чекбокса
+        driver.findElement(cssSelector("[data-test-id=agreement] input")).click();
+        // делаем клик на кнопку отправить, он у нас имеет значение span и идентификатор button
+        driver.findElement(cssSelector("span [data-test-id=button__text]")).click();
+        // получаем окно с текстом о заявке
+        String message = driver.findElement(cssSelector("span [data-test-id='order-success']")).getText();
+        // ожидаемый результат
+        assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", message.strip());
+    }
 
+    //  заявка не отправится, т.к неверные данные в поле ФИО/Имя
+    @Test
+    void shouldTestFailedName() {
+        driver.get("http://localhost:7777");
+        WebElement form = driver.findElement(cssSelector("form[class='form form_size_m form_theme_alfa-on-white']"));
+        driver.findElement(cssSelector("[data-test-id=name] input")).sendKeys("Ivan Andreevich");
+        driver.findElement(cssSelector("[data-test-id=phone] input")).sendKeys("+79325450351");
+        driver.findElement(cssSelector("[data-test-id=agreement] input")).click();
+        driver.findElement(cssSelector("span [data-test-id=button__text]")).click();
+        String message = driver.findElement(cssSelector("span [class=input__sub]")).getText();
+        assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", message.strip());
+    }
 
-
-
+    //  заявка не отправится, т.к неверные данные в поле Телефон
+    @Test
+    void shouldTestFailedPhone() {
+        driver.get("http://localhost:7777");
+        WebElement form = driver.findElement(cssSelector("form[class='form form_size_m form_theme_alfa-on-white']"));
+        driver.findElement(cssSelector("[data-test-id=name] input")).sendKeys("Иван Андреевич");
+        driver.findElement(cssSelector("[data-test-id=phone] input")).sendKeys("79325450351");
+        driver.findElement(cssSelector("[data-test-id=agreement] input")).click();
+        driver.findElement(cssSelector("span [data-test-id=button__text]")).click();
+        String message = driver.findElement(cssSelector("span [class=input__sub]")).getText();
+        assertEquals("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.", message.strip());
+    }
 }
