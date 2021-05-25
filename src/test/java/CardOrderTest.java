@@ -11,6 +11,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.openqa.selenium.By.cssSelector;
 
+import java.util.List;
 
 
 public class CardOrderTest {
