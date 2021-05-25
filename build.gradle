@@ -16,8 +16,11 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.1'
-    testImplementation 'com.codeborne:selenide:5.19.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
+    testImplementation 'org.seleniumhq.selenium:selenium-chrome-driver:3.141.59'
+// добавляем зависимоть, чтобы CI проходил, т.к у меня Windows, а CI на Linux
+    testCompile("io.github.bonigarcia:webdrivermanager:3.8.1")
 }
 
 test {
