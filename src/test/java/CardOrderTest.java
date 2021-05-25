@@ -11,8 +11,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.openqa.selenium.By.cssSelector;
 
-import java.util.List;
-
 
 public class CardOrderTest {
     private WebDriver driver;
@@ -40,7 +38,7 @@ public class CardOrderTest {
         driver = null;
     }
 
-    //  заявка отправляется успешно
+    // заявка отправляется успешно
     @Test
     void shouldTestSuccess() {
         driver.get("http://localhost:7777");
@@ -60,7 +58,7 @@ public class CardOrderTest {
         assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", message.strip());
     }
 
-    //  заявка не отправится, т.к неверные данные в поле ФИО/Имя
+    // заявка не отправится, т.к неверные данные в поле ФИО/Имя
     @Test
     void shouldTestFailedName() {
         driver.get("http://localhost:7777");
@@ -73,7 +71,7 @@ public class CardOrderTest {
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", message.strip());
     }
 
-    //  заявка не отправится, т.к неверные данные в поле Телефон
+    // заявка не отправится, т.к неверные данные в поле Телефон
     @Test
     void shouldTestFailedPhone() {
         driver.get("http://localhost:7777");
