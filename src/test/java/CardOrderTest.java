@@ -51,11 +51,11 @@ public class CardOrderTest {
         // тут используем индификатор phone
         driver.findElement(cssSelector("[data-test-id=phone] input")).sendKeys("+79325450351");
         // добавляем элемент чекбокса
-        driver.findElement(cssSelector("[data-test-id=agreement] input")).click();
+        driver.findElement(cssSelector("[data-test-id=agreement] ")).click();
         // делаем клик на кнопку отправить, он у нас имеет значение span и идентификатор button
-        driver.findElement(cssSelector("span [data-test-id=button__text]")).click();
+        driver.findElement(cssSelector("span[class=button__text]")).click();
         // получаем окно с текстом о заявке
-        String message = driver.findElement(cssSelector("span [data-test-id='order-success']")).getText();
+        String message = driver.findElement(cssSelector("[data-test-id='order-success']")).getText();
         // ожидаемый результат
         assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", message.strip());
     }
@@ -67,8 +67,8 @@ public class CardOrderTest {
         WebElement form = driver.findElement(cssSelector("form[class='form form_size_m form_theme_alfa-on-white']"));
         driver.findElement(cssSelector("[data-test-id=name] input")).sendKeys("Ivan Andreevich");
         driver.findElement(cssSelector("[data-test-id=phone] input")).sendKeys("+79325450351");
-        driver.findElement(cssSelector("[data-test-id=agreement] input")).click();
-        driver.findElement(cssSelector("span [data-test-id=button__text]")).click();
+        driver.findElement(cssSelector("[data-test-id=agreement]")).click();
+        driver.findElement(cssSelector("span[class=button__text]")).click();
         String message = driver.findElement(cssSelector("span [class=input__sub]")).getText();
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", message.strip());
     }
@@ -80,9 +80,9 @@ public class CardOrderTest {
         WebElement form = driver.findElement(cssSelector("form[class='form form_size_m form_theme_alfa-on-white']"));
         driver.findElement(cssSelector("[data-test-id=name] input")).sendKeys("Иван Андреевич");
         driver.findElement(cssSelector("[data-test-id=phone] input")).sendKeys("79325450351");
-        driver.findElement(cssSelector("[data-test-id=agreement] input")).click();
-        driver.findElement(cssSelector("span [data-test-id=button__text]")).click();
-        String message = driver.findElement(cssSelector("span [class=input__sub]")).getText();
+        driver.findElement(cssSelector("[data-test-id=agreement]")).click();
+        driver.findElement(cssSelector("span[class=button__text]")).click();
+        String message = driver.findElement(cssSelector("#root > div > form > div:nth-child(2) > span > span > span.input__sub")).getText();
         assertEquals("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.", message.strip());
     }
 }
