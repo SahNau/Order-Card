@@ -21,8 +21,3 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build test --info   
-       -jar ./artifacts/app-order.jar -port=7777 &
- 
-
-
-
